@@ -55,9 +55,7 @@ int main(void)
                 {
                         char *temp = (char*)malloc(sizeof(char)*strlen(token) + 1);
                         strcpy(temp, token);
-                        printf("Temp: %s\n", temp);
                         num = hm_get(hm, temp, d1);
-                        printf("Num: %d\n", num);
                         hm_put(hm, temp, d1, num);
                         //free(temp);
                         token = strtok(NULL, " \t\n");
@@ -71,9 +69,7 @@ int main(void)
                 {
                         char *temp = (char*)malloc(sizeof(char)*strlen(token) + 1);
                         strcpy(temp, token);
-                        printf("Temp: %s\n", temp);
                         num = hm_get(hm, temp, d2);
-                        printf("Num: %d\n", num);
                         hm_put(hm, temp, d2, num);
                         //free(temp);
                         token = strtok(NULL, " ");
@@ -89,16 +85,14 @@ int main(void)
                 {
                         char *temp = (char*)malloc(sizeof(char)*strlen(token) + 1);
                         strcpy(temp, token);
-                        printf("Temp: %s\n", temp);
                         num = hm_get(hm, temp, d3);
-                        printf("num: %d\n", num);
                         hm_put(hm, temp, d3, num);
                         //free(temp);
                         token = strtok(NULL, " ");
                 }
         }
         
-        //hm_remove(hm, "rocks","D2");
+        hm_remove(hm, "is");
         printList(hm);
         hm_destroy(hm);
         return 0;
@@ -113,32 +107,23 @@ int printList(struct hashmap* hm)
                 
                 struct llnode *ptr = hm->map[i];
                 struct docnode *docptr = ptr->doc;
-                while(ptr->next != NULL)
+                if(ptr->word != NULL)
                 {
-                        printf("Test: %d %s \n", i,ptr->word);
-                        while(docptr->doc_next != NULL)
+                        while(ptr != NULL)
                         {
-                                printf("        doc: %s\n", docptr->document_id);
-                                printf("        num: %d\n", docptr->num_occurrences);
-                                //printf("doc->next: %s\n", docptr->doc_next);
-                                docptr = docptr->doc_next;
-                        }
-                        printf("        doc: %s\n", docptr->document_id);
-                        printf("        num: %d\n", docptr->num_occurrences);
-                        ptr = ptr->next;
-                } 
-                
-                printf("%d %s \n", i,ptr->word);
-                while(docptr->doc_next != NULL)
-                {
-                        printf("        doc: %s\n", docptr->document_id);
-                        printf("        num: %d\n", docptr->num_occurrences);
-                        //printf("doc->next: %s\n", docptr->doc_next);
-                        docptr = docptr->doc_next;
+                                printf("Test: %d %s \n", i,ptr->word);
+                                docptr = ptr->doc;
+                                while(docptr != NULL)
+                                {
+                                        printf("        doc: %s\n", docptr->document_id);
+                                        printf("        num: %d\n", docptr->num_occurrences);
+                                        docptr = docptr->doc_next;
+                                }
+                                printf("        df: %d\n", ptr->document_frequency);
+                                ptr = ptr->next;
+                        } 
                 }
-                printf("        doc: %s\n", docptr->document_id);
-                printf("        num: %d\n", docptr->num_occurrences);
-                printf("\n");  
+                 
                 
         }
         printf("num elements: %d \n", hm->num_elements);
